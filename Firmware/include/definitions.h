@@ -5,3 +5,6 @@
 #define SDA_AHT_02 19
 
 #define I2C_CLOCK 400000
+
+#define MIC_PIN_OUT 13
+#define MIC_GAIN_PIN 12
