@@ -12,7 +12,7 @@ TwoWire i2c_02 = TwoWire(1);
 Adafruit_AHTX0 aht_01;
 Adafruit_AHTX0 aht_02;
 
-sensors_event_t humidity, temp;
+sensors_event_t humidity_01,humidity_02, temp_01,temp_02;
 
 void setUp(void)
 {
@@ -42,16 +42,22 @@ void test_aht_sensor(void)
 }
 void test_get_event(void)
 {
-    int event = aht_01.getEvent(&humidity,&temp);
-    TEST_ASSERT_NOT_EQUAL(0xFF,event);
-    TEST_ASSERT_NOT_NULL(&humidity);
-    TEST_ASSERT_NOT_NULL(&temp);
+    int event_01 = aht_02.getEvent(&humidity_01,&temp_01);
+    TEST_ASSERT_NOT_EQUAL(0xFF,event_01);
+    TEST_ASSERT_NOT_NULL(&humidity_01);
+    TEST_ASSERT_NOT_NULL(&temp_01);
+    int event_02 = aht_01.getEvent(&humidity_02,&temp_02);
+    TEST_ASSERT_NOT_EQUAL(0xFF,event_02);
+    TEST_ASSERT_NOT_NULL(&humidity_02);
+    TEST_ASSERT_NOT_NULL(&temp_02);
 }
 
 void test_tempurature_and_humidity(void)
 {
-    float tempurature = temp.temperature;
-    TEST_ASSERT_FLOAT_IS_NOT_NAN(tempurature);
+    float tempurature_01 = temp_01.temperature;
+    TEST_ASSERT_FLOAT_IS_NOT_NAN(tempurature_01);
+    float tempurature_02 = temp_02.temperature;
+    TEST_ASSERT_FLOAT_IS_NOT_NAN(tempurature_02);
 }
 
 void setup()

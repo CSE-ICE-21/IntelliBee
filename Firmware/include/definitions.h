@@ -1,12 +1,12 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
+#include "structs.h"
 
+#define SCL_AHT_01 27
+#define SDA_AHT_01 26
 
-#define SCL_AHT_01 21
-#define SDA_AHT_01 5
-
-#define SCL_AHT_02 18
-#define SDA_AHT_02 19
+#define SCL_AHT_02 33
+#define SDA_AHT_02 32
 
 #define I2C_CLOCK 400000
 
@@ -18,14 +18,15 @@
 #define SD_SCLK     18
 #define SD_CS       5
 
-#define MAX_RETRIES 10
+#define MAX_RETRIES 5
 
 #define uS_TO_S_FACTOR 1000000  
-#define TIME_TO_SLEEP  5        // Time ESP32 will go to sleep (in seconds)  
+#define TIME_TO_SLEEP 300 //seconds
 
 #define LED_PIN 2
 
-#define STATES 7
+#define STATES 9
 
+extern RTC_DATA_ATTR state_t current_state;
 
 #endif
