@@ -2,11 +2,11 @@
 #define DEFINITIONS_H
 #include "structs.h"
 
-#define SCL_AHT_01 27
-#define SDA_AHT_01 26
+#define SCL_AHT_IN 27
+#define SDA_AHT_IN 26
 
-#define SCL_AHT_02 33
-#define SDA_AHT_02 32
+#define SCL_AHT_OUT 33
+#define SDA_AHT_OUT 32
 
 #define I2C_CLOCK 400000
 

@@ -14,8 +14,8 @@
 RTC_DATA_ATTR context_t device_context;
 RTC_DATA_ATTR state_t current_state = WIFI_CONNECTING;
 
-TwoWire i2c_01 = TwoWire(0);
-TwoWire i2c_02 = TwoWire(1);
+TwoWire i2c_in = TwoWire(0);
+TwoWire i2c_out = TwoWire(1);
 
 Adafruit_AHTX0 aht_in;
 Adafruit_AHTX0 aht_out;
@@ -56,10 +56,10 @@ status_t sync_time(context_t *device_context)
 
 status_t setup_aht(context_t *device_context)
 {
-  i2c_01.begin(SDA_AHT_01, SCL_AHT_01, I2C_CLOCK);
-  i2c_02.begin(SDA_AHT_02, SCL_AHT_02, I2C_CLOCK);
-  bool aht_found_01 = device_context->aht_in->begin(&i2c_01);
-  bool aht_found_02 = device_context->aht_out->begin(&i2c_02);
+  i2c_in.begin(SDA_AHT_IN, SCL_AHT_IN, I2C_CLOCK);
+  i2c_out.begin(SDA_AHT_OUT, SCL_AHT_OUT, I2C_CLOCK);
+  bool aht_found_01 = device_context->aht_in->begin(&i2c_in);
+  bool aht_found_02 = device_context->aht_out->begin(&i2c_out);
   if (!aht_found_01 || !aht_found_02)
   {
     String msg = "Tempurature Sensors are not responding : AHT_IN - " + String(aht_found_01) + " | AHT_OUT - " + String(aht_found_02);
@@ -144,10 +144,7 @@ status_t run_device(context_t *device_context)
   int current_tries = MAX_RETRIES;
   while (current_state != SLEEP)
   {
-    Serial.println(current_tries);
     current_tries--;
-    Serial.print("Current state : ");
-    Serial.println(current_state);
     status_t status = state_machine[current_state](device_context);
     if (status == OKAY)
     {
@@ -176,8 +173,8 @@ status_t run_device(context_t *device_context)
   {
     log_msg("Going to sleep", "INFO", "SLEEP");
     current_state = SETUP;
-    i2c_01.end();
-    i2c_02.end();
+    i2c_in.end();
+    i2c_out.end();
     SD.end();
     SPI.end();
     esp_deep_sleep_start();
@@ -198,7 +195,6 @@ void get_wakeup_reason(){
 
 void setup()
 {
-  Serial.begin(115200);
   pinMode(LED_PIN, OUTPUT);
   pinMode(MIC_PIN_OUT, INPUT);
   get_wakeup_reason();
