@@ -18,7 +18,7 @@ void tearDown(void)
 
 void test_i2c_initialization(void)
 {
-    bool i2c_initialized = i2c.begin(SDA_AHT_01,SCL_AHT_01,I2C_CLOCK);
+    bool i2c_initialized = i2c.begin(SDA_AHT_02,SCL_AHT_02,I2C_CLOCK);
     TEST_ASSERT_EQUAL(true, i2c_initialized);
 }
 
