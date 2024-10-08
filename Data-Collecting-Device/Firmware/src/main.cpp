@@ -1,9 +1,10 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <WiFi.h>
-#include "time.h"
+#include <driver/i2s.h>
 #include <SPI.h>
 #include <Adafruit_AHTX0.h>
+#include "time.h"
 #include "SD.h"
 #include "structs.h"
 #include "definitions.h"
@@ -19,6 +20,8 @@ TwoWire i2c_out = TwoWire(1);
 
 Adafruit_AHTX0 aht_in;
 Adafruit_AHTX0 aht_out;
+
+int16_t raw_samples[BUFFER_SIZE];
 
 void show_status(int daly_01, int delay_02)
 {
@@ -42,6 +45,23 @@ status_t init_wifi(context_t *device_context)
   if (current_tries == 0)
   {
     log_msg("Failed to establish connection with WIFI", "WARNING", "WIFI CONNECTION");
+    return ERROR;
+  }
+  return OKAY;
+}
+
+status_t setup_i2c(context_t *device_context)
+{
+  esp_err_t i2s_driver_installed = i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
+  if (i2s_driver_installed != ESP_OK)
+  {
+    log_msg("Failed to install I2S driver", "ERROR", "I2S DRIVER INSTALLATION");
+    return ERROR;
+  }
+  esp_err_t i2s_pin_set = i2s_set_pin(I2S_NUM_0, &i2s_mic_pins);
+  if (i2s_pin_set != ESP_OK)
+  {
+    log_msg("Failed to set I2S pins", "ERROR", "I2S PINS SETTING");
     return ERROR;
   }
   return OKAY;
@@ -155,7 +175,7 @@ status_t run_device(context_t *device_context)
     }
     else if (status == ERROR)
     {
-      log_msg("Failed to execute state", "ERROR", "STATE EXECUTION");     
+      log_msg("Failed to execute state", "ERROR", "STATE EXECUTION");
       for (int i = 0; i < (int)current_state; i++)
       {
         show_status(900, 100);
@@ -182,14 +202,19 @@ status_t run_device(context_t *device_context)
   return OKAY;
 }
 
-void get_wakeup_reason(){
+void get_wakeup_reason()
+{
   esp_sleep_wakeup_cause_t wakeup_reason;
   wakeup_reason = esp_sleep_get_wakeup_cause();
 
-  switch(wakeup_reason)
+  switch (wakeup_reason)
   {
-    case ESP_SLEEP_WAKEUP_TIMER : log_msg("Wakeup was caused by timer", "INFO", "WAKEUP"); break;
-    default : log_msg("Wakeup was not caused by timer", "WARNING", "WAKEUP"); break;
+  case ESP_SLEEP_WAKEUP_TIMER:
+    log_msg("Wakeup was caused by timer", "INFO", "WAKEUP");
+    break;
+  default:
+    log_msg("Wakeup was not caused by timer", "WARNING", "WAKEUP");
+    break;
   }
 }
 

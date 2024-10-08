@@ -1,8 +1,12 @@
 #include "logger.h"
 #include <stdlib.h>
 #include "SPIFFS.h"
+#include "driver/i2s.h"
+
 
 RTC_DATA_ATTR int counter_microphone = 0;
+
+
 
 status_t log_mic_data(context_t *device_context)
 {
@@ -12,7 +16,16 @@ status_t log_mic_data(context_t *device_context)
         return OKAY;
     }
     counter_microphone = 1;
+
     digitalWrite(2, HIGH);
+    int16_t raw_samples[BUFFER_SIZE];
+    size_t bytes_read = 0;
+    error_t i2s_read_status = i2s_read(I2S_NUM_0, raw_samples, sizeof(int16_t) * BUFFER_SIZE, &bytes_read, portMAX_DELAY);
+    int samples_read = bytes_read / sizeof(int16_t);
+    for (int i = 0; i < samples_read; i++)
+    {
+        Serial.printf("%ld\n", raw_samples[i]);
+    }
     int16_t *array = (int16_t *)malloc(30000 * sizeof(int16_t));
     if (array == nullptr) // Check if memory allocation failed
     {

@@ -4,7 +4,10 @@
 #include "definitions.h"
 #include "structs.h"
 #include "file_operations.h"
+#include "configurations.h"
 #include "SD.h"
+#include <driver/i2s.h>
+
 
 status_t log_mic_data(context_t *device_context); 
 status_t log_aht_data(context_t *device_context);  
