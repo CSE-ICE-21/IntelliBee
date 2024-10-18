@@ -2,6 +2,8 @@
 #define DEFINITIONS_H
 #include "structs.h"
 
+#define AHT_EN 16
+
 #define SCL_AHT_IN 27
 #define SDA_AHT_IN 26
 
@@ -9,6 +11,8 @@
 #define SDA_AHT_OUT 32
 
 #define I2C_CLOCK 400000
+
+#define MIC_EN 17
 
 #define MIC_PIN_OUT 34
 #define MIC_GAIN_PIN 12

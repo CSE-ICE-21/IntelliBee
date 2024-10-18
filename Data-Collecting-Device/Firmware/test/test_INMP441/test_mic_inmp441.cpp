@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <unity.h>
-// #include "definitions.h"
+#include "definitions.h"
 #include <driver/i2s.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -66,6 +66,8 @@ void test_i2s_read(void)
 
 void setup()
 {
+    pinMode(MIC_EN,OUTPUT);
+    digitalWrite(MIC_EN,HIGH);
     UNITY_BEGIN(); // IMPORTANT LINE!
     RUN_TEST(test_i2s_driver_install);
     RUN_TEST(test_i2s_set_pin);
