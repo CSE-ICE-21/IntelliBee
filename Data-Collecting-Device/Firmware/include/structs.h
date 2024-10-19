@@ -6,7 +6,8 @@
 typedef enum
 {
     OKAY = 0,
-    ERROR = 1
+    ERROR = 1,
+    BATTERY_LOW_ERROR = 2,
 } status_t;
 
 typedef enum
@@ -31,6 +32,17 @@ typedef struct
     state_t current_state;
     Adafruit_AHTX0 *aht_in;
     Adafruit_AHTX0 *aht_out;
+    float temp_in;
+    float temp_out;
+    float hum_in;
+    float hum_out;
 } context_t;
+
+typedef struct 
+{   
+    int battery_level;
+    bool charging;
+
+} battery_t;
 
 #endif

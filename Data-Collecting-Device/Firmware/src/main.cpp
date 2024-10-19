@@ -195,8 +195,11 @@ void get_wakeup_reason(){
 
 void setup()
 {
+  // Catching the button press and hold the power
+  pinMode(LATCH_EN, OUTPUT);
+  digitalWrite(LATCH_EN, HIGH);
+
   pinMode(LED_PIN, OUTPUT);
-  pinMode(MIC_PIN_OUT, INPUT);
   get_wakeup_reason();
   device_context.current_state = SPI_INIT;
   device_context.file_path = "/data/sample.txt";

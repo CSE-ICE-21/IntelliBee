@@ -10,4 +10,6 @@ const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 0;
 const int   daylightOffset_sec = 19800;
 
+extern RTC_DATA_ATTR state_t current_state;
+
 #endif 
