@@ -3,10 +3,10 @@
 
 #define DIR_PATH "/data"
 
-const char* ssid     = "Redmi12";
-const char* password = "1234567890";
+extern const char* ssid;
+extern const char* password;
 
-const char* ntpServer = "pool.ntp.org";
+extern const char* ntpServer;
 const long  gmtOffset_sec = 0;
 const int   daylightOffset_sec = 19800;
 

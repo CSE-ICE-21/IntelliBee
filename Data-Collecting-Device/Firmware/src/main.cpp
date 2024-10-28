@@ -20,10 +20,10 @@ TwoWire i2c_out = TwoWire(1);
 Adafruit_AHTX0 aht_in;
 Adafruit_AHTX0 aht_out;
 
-void show_status(int daly_01, int delay_02)
+void show_status(int delay_01, int delay_02)
 {
   digitalWrite(2, HIGH);
-  delay(daly_01);
+  delay(delay_01);
   digitalWrite(2, LOW);
   delay(delay_02);
 }
@@ -198,16 +198,41 @@ void setup()
   // Catching the button press and hold the power
   pinMode(LATCH_EN, OUTPUT);
   digitalWrite(LATCH_EN, HIGH);
-
+  Serial.begin(115200);
   pinMode(LED_PIN, OUTPUT);
-  get_wakeup_reason();
-  device_context.current_state = SPI_INIT;
-  device_context.file_path = "/data/sample.txt";
-  device_context.csv_file_path = "/data/data.csv";
-  device_context.aht_in = &aht_in;
-  device_context.aht_out = &aht_out;
-  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-  status_t status = run_device(&device_context);
+  pinMode(SD_EN, OUTPUT);
+  digitalWrite(SD_EN, HIGH);
+  init_SPI(&device_context);
+  init_sd_card(&device_context);
+  uint8_t cardType = SD.cardType();
+
+  if (cardType == CARD_NONE) {
+    Serial.println("No SD card attached");
+    return;
+  }
+
+  Serial.print("SD Card Type: ");
+  if (cardType == CARD_MMC) {
+    Serial.println("MMC");
+  } else if (cardType == CARD_SD) {
+    Serial.println("SDSC");
+  } else if (cardType == CARD_SDHC) {
+    Serial.println("SDHC");
+  } else {
+    Serial.println("UNKNOWN");
+  }
+
+  uint64_t cardSize = SD.cardSize() / (1024 * 1024);
+  Serial.printf("SD Card Size: %lluMB\n", cardSize);
+  
+  // get_wakeup_reason();
+  // device_context.current_state = SPI_INIT;
+  // device_context.file_path = "/data/sample.txt";
+  // device_context.csv_file_path = "/data/data.csv";
+  // device_context.aht_in = &aht_in;
+  // device_context.aht_out = &aht_out;
+  // esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+  // status_t status = run_device(&device_context);
 }
 
 void loop()

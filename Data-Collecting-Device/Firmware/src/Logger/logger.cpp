@@ -24,7 +24,6 @@ status_t log_mic_data(context_t *device_context)
     for (int i = 0; i < 30000; i++)
     {
         start_time = micros();
-        array[i] = analogRead(MIC_PIN_OUT);
         unsigned long time_taken = micros() - start_time;
         if (time_taken < 1000)
             delayMicroseconds(1000 - time_taken);

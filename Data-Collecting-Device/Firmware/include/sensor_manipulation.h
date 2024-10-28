@@ -12,7 +12,7 @@
 
 
 status_t read_env_data(float *temp_in, float *temp_out, float *hum_in, float *hum_out);
-status_t read_mic_data(int16_t *array, int size);   
+status_t read_mic_data(int32_t *array, int size);   
 
 
 #endif //SENSOR_MANIPULATION
