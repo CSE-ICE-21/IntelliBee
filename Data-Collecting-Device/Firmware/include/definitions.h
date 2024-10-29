@@ -33,7 +33,10 @@
 
 #define MAX_LATENCY 100
 
-#define MINIMUM_BATTERY_LEVEL 900
+#define DIFFERENCE 2
+#define ZERO_PERCENT 835
+
+#define MINIMUM_BATTERY_LEVEL 10
 
 #define I2C_CLOCK 400000
 
@@ -44,7 +47,7 @@
 
 #define LED_PIN 2
 
-#define STATES 9
+#define STATES 7
 
 
 #endif
