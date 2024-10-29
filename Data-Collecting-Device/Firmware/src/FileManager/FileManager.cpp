@@ -1,4 +1,4 @@
-#include "file_operations.h"
+#include "FileManager.h"
 
 status_t appendFile(fs::FS &fs, const char *path, const char *message)
 {
@@ -16,7 +16,7 @@ status_t appendFile(fs::FS &fs, const char *path, const char *message)
   return OKAY;
 }
 
-status_t appendArray(fs::FS &fs, const char *path, int16_t *array, int size)
+status_t appendArray(fs::FS &fs, const char *path, int32_t *array, int size)
 {
   File file = fs.open(path, FILE_APPEND);
   if (!file)
