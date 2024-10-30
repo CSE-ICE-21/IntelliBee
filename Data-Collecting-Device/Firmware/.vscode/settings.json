@@ -3,5 +3,6 @@
         "array": "cpp",
         "string": "cpp",
         "string_view": "cpp"
-    }
+    },
+    "idf.adapterTargetName": "esp32"
 }
