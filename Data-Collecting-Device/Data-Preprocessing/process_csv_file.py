@@ -1,8 +1,16 @@
 import csv,os
 from paths import *
+from datetime import datetime,timedelta
+import shutil
 
-FIELDS = ["Inside-Tempurature","Inside-Humidity","Outside-Tempurature","Outside-Humidity"]
-RAW_CSV = os.path.join(RAW_DATA_PATH, 'data.csv')
+# Sample 01 Fields
+# FIELDS = ["Inside-Tempurature","Inside-Humidity","Outside-Tempurature","Outside-Humidity"]
+#Sample 02 Fields
+FIELDS = ["Time Stamp","Battery Level","isCharging","Temp In","Temp Out","Hum In","Hum Out"]
+# Sample 01 CSV File
+# RAW_CSV = os.path.join(RAW_DATA_PATH, 'data.csv')
+# Sample 02 CSV File
+RAW_CSV = os.path.join(SAMPLE_02_PATH, 'data.csv')
 PREPROCESSED_CSV = os.path.join(PREPROCESSED_CSV_FILES_PATH, 'data.csv')
 
 def process_csv_file(file_name:str)->dict:
@@ -18,10 +26,10 @@ def process_csv_file(file_name:str)->dict:
         for row in csv_dict_reader:
             processed_data.append(row)
 
-    return processed_data
+    return processed_data[3:]
 
 
-def write_csv_file(file_name:str, data:dict)->None:
+def write_csv_file(file_name:str, data:list)->None:
     """
     This function writes the processed data to a CSV file.
     :param file_name: Name of the CSV file to be written.
@@ -33,4 +41,15 @@ def write_csv_file(file_name:str, data:dict)->None:
         for row in data:
             csv_dict_writer.writerow(row)
 
-write_csv_file(PREPROCESSED_CSV, process_csv_file(RAW_CSV))
+data_list  = process_csv_file(RAW_CSV)
+starting_date = datetime.strptime(data_list[0]['Time Stamp'], '%Y-%m-%d %H:%M:%S')
+print(starting_date)
+last_date = starting_date
+for data in data_list[1:2]:
+    new_date = last_date + timedelta(minutes=5,seconds=15)
+    shutil.copyfile(os.path.join(SAMPLE_02_PATH,data['Time Stamp'].replace(' ','-').replace(':','-')+".txt"),os.path.join(PREPROCESSED_TEXT_FILES_PATH,new_date.strftime('%Y-%m-%d-%H-%M-%S')+".txt"))
+    data['Time Stamp'] = new_date.strftime('%Y-%m-%d %H:%M:%S')
+    last_date = new_date
+
+preprossed_csv_path = os.path.join(PREPROCESSED_CSV_FILES_PATH, 'sample-02.csv')
+write_csv_file(preprossed_csv_path, data_list)
