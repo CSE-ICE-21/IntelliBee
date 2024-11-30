@@ -18,6 +18,7 @@ void setup()
     esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
     Serial.begin(115200);
     run_device(&device_context);
+    Serial.begin(115200, SERIAL_8N1, 16,17);
 }
 
 void loop()
