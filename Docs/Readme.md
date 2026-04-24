@@ -8,6 +8,22 @@
 
 ![3D Design](https://github.com/CSE-ICE-21/IntelliBee/blob/docs/Assets/3D-Design.png)
 
+## Cite Our Dataset
+```bibtex
+@dataset{yasantha_niroshan_2026_19739013,
+  author       = {Yasantha Niroshan and
+                  Sooriyaarachchi, Sulochana and
+                  Gunarathne, Isuru},
+  title        = {Bee Acoustic Dataset with Environmental Parameters},
+  month        = apr,
+  year         = 2026,
+  publisher    = {Zenodo},
+  version      = {V1.0},
+  doi          = {10.5281/zenodo.19739013},
+  url          = {https://doi.org/10.5281/zenodo.19739013},
+}
+```
+
 ## Need More Information?
 > [!TIP]
 > Check out the [Intellibee Wiki](https://github.com/CSE-ICE-21/IntelliBee/wiki) for more details on the project.
